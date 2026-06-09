@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taste of Chennai</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --saffron: #E8590C;
+    --gold: #D4860A;
+    --cream: #FAF3E0;
+    --deep-red: #8B1A1A;
+    --charcoal: #1A1208;
+    --warm-white: #FFF9F0;
+    --border: rgba(212,134,10,0.25);
+    --nav-h: 80px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--cream); color: var(--charcoal); font-family: 'DM Sans', sans-serif; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--deep-red);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem; height: var(--nav-h);
+    border-bottom: 3px solid var(--gold);
+    box-shadow: 0 4px 20px rgba(139,26,26,0.4);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; cursor: pointer; }
+  .nav-logo-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; /* optional: makes it circular */
+  object-fit: cover;
+}
+  .nav-logo span { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); letter-spacing: 0.02em; }
+  .nav-links { display: flex; gap: 0.25rem; }
+  .nav-links a {
+    color: rgba(255,249,240,0.85); text-decoration: none; font-size: 0.875rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.5rem 1.1rem; border-radius: 4px; transition: all 0.2s; cursor: pointer;
+  }
+  .nav-links a:hover, .nav-links a.active { background: rgba(212,134,10,0.2); color: var(--gold); }
+
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero {
+    position: relative; overflow: hidden;
+    height: calc(100vh - var(--nav-h)); min-height: 580px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, #1A1208 0%, #3D1A0A 50%, #1A1208 100%);
+  }
+  .hero-pattern {
+    position: absolute; inset: 0; opacity: 0.06;
+    background-image: repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%);
+    background-size: 20px 20px;
+  }
+  .hero-img {
+  position: absolute;
+  inset: 0;
+  background: url('Dosai.jpeg') center/cover no-repeat;
+  opacity: 0.5; /* adjust visibility */
+  z-index: 0;
+}
+  .hero-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(232,89,12,0.15) 0%, transparent 70%); }
+  .hero-content { position: relative; z-index: 2; padding: 2rem; }
+  .hero-badge { display: inline-block; background: var(--saffron); color: #fff; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.3rem 1rem; border-radius: 2px; margin-bottom: 1.5rem; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 6rem); color: var(--warm-white); line-height: 1.05; margin-bottom: 1rem; }
+  .hero h1 em { color: var(--gold); font-style: italic; }
+  .hero p { font-size: 1.1rem; color: rgba(255,249,240,0.75); max-width: 500px; margin: 0 auto 2.5rem; line-height: 1.7; }
+  .hero-cta { display: inline-flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .btn-primary { background: var(--saffron); color: #fff; text-decoration: none; padding: 0.85rem 2rem; border-radius: 4px; font-weight: 500; font-size: 0.9rem; letter-spacing: 0.04em; transition: background 0.2s, transform 0.15s; display: inline-block; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; }
+  .btn-primary:hover { background: #c44a07; transform: translateY(-2px); }
+  .btn-outline { background: transparent; color: var(--warm-white); text-decoration: none; padding: 0.85rem 2rem; border-radius: 4px; font-weight: 500; font-size: 0.9rem; letter-spacing: 0.04em; border: 1.5px solid rgba(255,249,240,0.35); transition: all 0.2s; display: inline-block; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+  section { padding: 5rem 2.5rem; }
+  .section-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--saffron); margin-bottom: 0.6rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 2.4rem; color: var(--charcoal); margin-bottom: 1rem; }
+  .section-sub { font-size: 1rem; color: #6B5B3E; line-height: 1.7; max-width: 560px; }
+  .divider { width: 48px; height: 3px; background: var(--gold); margin: 1.2rem 0; border-radius: 2px; }
+
+  .features { background: var(--warm-white); }
+  .features-inner { max-width: 1100px; margin: 0 auto; }
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; margin-top: 3rem; }
+  .feature-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 2rem 1.5rem; transition: transform 0.2s, box-shadow 0.2s; }
+  .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(212,134,10,0.12); }
+  .feature-icon { width: 52px; height: 52px; border-radius: 12px; background: rgba(232,89,12,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.2rem; }
+  .feature-card h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 0.5rem; }
+  .feature-card p { font-size: 0.9rem; color: #6B5B3E; line-height: 1.65; }
+
+  .cuisine-strip { background: var(--deep-red); padding: 3rem 2.5rem; text-align: center; border-top: 3px solid var(--gold); border-bottom: 3px solid var(--gold); }
+  .cuisine-strip h2 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.8rem; margin-bottom: 1.5rem; }
+  .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+  .tag { background: rgba(212,134,10,0.15); border: 1px solid rgba(212,134,10,0.4); color: rgba(255,249,240,0.9); font-size: 0.82rem; font-weight: 500; padding: 0.45rem 1.1rem; border-radius: 30px; letter-spacing: 0.04em; }
+
+  footer { background: var(--charcoal); color: rgba(255,249,240,0.6); text-align: center; padding: 2rem; font-size: 0.85rem; }
+  footer strong { color: var(--gold); }
+
+  /* PAGE HEADER */
+  .page-header { background: var(--deep-red); padding: 4rem 2.5rem 3rem; text-align: center; border-bottom: 3px solid var(--gold); }
+  .page-header h1 { font-family: 'Playfair Display', serif; color: var(--warm-white); font-size: 2.8rem; }
+  .page-header p { color: rgba(255,249,240,0.7); margin-top: 0.5rem; font-size: 1rem; }
+
+  /* RESTAURANTS */
+  .restaurants-grid { max-width: 1100px; margin: 3rem auto; padding: 0 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+  .restaurant-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
+  .restaurant-card:hover { transform: translateY(-5px); box-shadow: 0 16px 40px rgba(139,26,26,0.14); }
+  .restaurant-card-header { height: 8px; }
+  .restaurant-card-body { padding: 1.5rem; }
+  .restaurant-card-num { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; color: var(--saffron); text-transform: uppercase; margin-bottom: 0.4rem; }
+  .restaurant-card h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 0.4rem; }
+  .restaurant-card p { font-size: 0.875rem; color: #6B5B3E; line-height: 1.6; }
+  .restaurant-card-footer { padding: 0.75rem 1.5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .restaurant-card-footer span { font-size: 0.8rem; color: #9B8060; }
+  .restaurant-card-footer .arrow { color: var(--saffron); font-size: 1.1rem; }
+
+  /* MARQUEE */
+  .marquee-bar { background: var(--gold); overflow: hidden; white-space: nowrap; }
+  .marquee { display: inline-block; padding-left: 100%; animation: scrollText 30s linear infinite; color: var(--deep-red); font-weight: 500; font-size: 0.9rem; letter-spacing: 0.04em; padding-top: 0.6rem; padding-bottom: 0.6rem; }
+  @keyframes scrollText { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+  /* MENU PAGE */
+  .menu-page { max-width: 980px; margin: 0 auto; padding: 2.5rem; }
+  .menu-category { margin-bottom: 3rem; }
+  .menu-category-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--deep-red); border-bottom: 2px solid var(--gold); padding-bottom: 0.5rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.6rem; }
+  .menu-category-icon { font-size: 1.2rem; }
+  .menu-items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 0.75rem; }
+  .menu-item { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; }
+  .menu-item:hover { background: rgba(232,89,12,0.06); border-color: var(--saffron); transform: scale(1.02); }
+  .menu-item span { font-size: 0.875rem; font-weight: 500; }
+  .menu-item .view-recipe { font-size: 0.68rem; color: var(--saffron); font-weight: 500; letter-spacing: 0.04em; white-space: nowrap; margin-left: 0.4rem; }
+
+  /* RECIPE OVERLAY */
+  .recipe-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(26,18,8,0.8); backdrop-filter: blur(5px); overflow-y: auto; padding: 2rem 1rem; }
+  .recipe-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+  .recipe-card { background: var(--warm-white); border-radius: 20px; overflow: hidden; max-width: 720px; width: 100%; margin: auto; border: 2px solid var(--gold); animation: slideUp 0.3s ease; }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+  /* RECIPE CARD INTERNALS */
+  .recipe-hero { background: var(--deep-red); padding: 2.5rem 2.5rem 3.5rem; text-align: center; position: relative; }
+  .recipe-hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: var(--warm-white); border-radius: 40px 40px 0 0; }
+  .recipe-hero .dish-emoji { font-size: 3rem; display: block; margin-bottom: 0.5rem; }
+  .recipe-hero h2 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 2rem; line-height: 1.15; }
+  .recipe-hero .tagline { color: rgba(255,249,240,0.7); font-size: 0.9rem; margin-top: 0.3rem; }
+  .recipe-body { padding: 0 2rem 2rem; }
+  .recipe-meta { display: flex; gap: 0.75rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; }
+  .recipe-meta-item { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 0.6rem 1.1rem; text-align: center; min-width: 80px; }
+  .recipe-meta-item .label { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #9B8060; }
+  .recipe-meta-item .val { font-size: 0.95rem; font-weight: 600; color: var(--charcoal); margin-top: 0.15rem; }
+  .recipe-section-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--deep-red); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
+  .ingredients-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; margin-bottom: 2rem; }
+  .ingredient { background: #fff; border-left: 3px solid var(--gold); padding: 0.45rem 0.75rem; border-radius: 0 6px 6px 0; font-size: 0.845rem; color: #3D2B0F; }
+  .steps-list { margin-bottom: 2rem; }
+  .step { display: flex; gap: 1rem; margin-bottom: 0.9rem; }
+  .step-num { width: 28px; height: 28px; min-width: 28px; background: var(--saffron); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; margin-top: 0.1rem; }
+  .step p { font-size: 0.875rem; line-height: 1.7; color: #3D2B0F; }
+  .recipe-tip { background: rgba(212,134,10,0.1); border: 1px solid rgba(212,134,10,0.3); border-radius: 10px; padding: 1rem 1.25rem; font-size: 0.865rem; color: #5C3D0A; line-height: 1.65; margin-bottom: 1.5rem; }
+  .recipe-tip strong { color: var(--gold); }
+  .recipe-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+  .recipe-tag { background: rgba(139,26,26,0.08); border: 1px solid rgba(139,26,26,0.18); color: var(--deep-red); font-size: 0.72rem; font-weight: 500; padding: 0.25rem 0.7rem; border-radius: 20px; }
+  .close-recipe { display: block; width: 100%; background: var(--deep-red); color: var(--gold); border: none; padding: 0.9rem; font-size: 0.9rem; font-weight: 500; letter-spacing: 0.06em; cursor: pointer; border-radius: 10px; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+  .close-recipe:hover { background: #6a1212; }
+
+  /* AREAS PAGE */
+  .areas-layout { max-width: 1100px; margin: 0 auto; padding: 2.5rem; display: grid; grid-template-columns: 280px 1fr; gap: 2rem; align-items: start; }
+  .areas-sidebar { background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .areas-sidebar-title { background: var(--deep-red); padding: 1rem 1.25rem; color: var(--gold); font-family: 'Playfair Display', serif; font-size: 1.1rem; }
+  .area-list { list-style: none; }
+  .area-list li { border-bottom: 1px solid var(--border); }
+  .area-list li:last-child { border-bottom: none; }
+  .area-btn { width: 100%; background: none; border: none; padding: 0.85rem 1.25rem; text-align: left; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--charcoal); display: flex; justify-content: space-between; align-items: center; transition: background 0.15s; }
+  .area-btn:hover, .area-btn.selected { background: rgba(232,89,12,0.07); color: var(--saffron); }
+  .area-btn .count { font-size: 0.75rem; background: var(--saffron); color: #fff; padding: 0.15rem 0.5rem; border-radius: 20px; }
+  .area-detail-panel { background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .area-detail-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--warm-white); display: flex; justify-content: space-between; align-items: center; }
+  .area-detail-header h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--charcoal); }
+  .area-detail-header .badge { font-size: 0.8rem; color: #9B8060; background: rgba(232,89,12,0.08); border: 1px solid rgba(232,89,12,0.2); padding: 0.25rem 0.75rem; border-radius: 20px; }
+  .area-empty { padding: 3rem; text-align: center; color: #9B8060; font-size: 0.95rem; }
+  .area-empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .area-rest-cards { padding: 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+  .area-rest-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.1rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: inherit; }
+  .area-rest-card:hover { background: rgba(232,89,12,0.06); border-color: var(--saffron); transform: translateY(-2px); }
+  .area-rest-card span { font-size: 0.875rem; font-weight: 500; color: var(--charcoal); }
+  .area-rest-card .arrow { color: var(--saffron); font-size: 0.9rem; }
+  .area-info { padding: 1rem 1.5rem; border-top: 1px solid var(--border); background: rgba(212,134,10,0.04); }
+  .area-info p { font-size: 0.8rem; color: #9B8060; }
+
+  /* ABOUT */
+  .about-layout { max-width: 900px; margin: 0 auto; padding: 2.5rem; }
+  .about-hero { background: var(--deep-red); border-radius: 20px; padding: 3rem; text-align: center; margin-bottom: 3rem; border: 2px solid var(--gold); }
+  .about-hero h2 { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 2rem; }
+  .about-hero p { color: rgba(255,249,240,0.8); margin-top: 0.75rem; line-height: 1.8; font-size: 0.95rem; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem; }
+  .about-card { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 2rem; }
+  .about-card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--deep-red); margin-bottom: 1rem; }
+  .about-card p, .about-card li { font-size: 0.9rem; color: #4A3520; line-height: 1.75; }
+  .about-card ul { list-style: none; }
+  .about-card ul li { padding: 0.3rem 0; padding-left: 1.2em; position: relative; }
+  .about-card ul li::before { content: '✦'; position: absolute; left: 0; color: var(--gold); font-size: 0.6rem; top: 0.45rem; }
+  .contact-section { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 2rem; }
+  .contact-section h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--deep-red); margin-bottom: 1.5rem; }
+  .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+  .contact-item { display: flex; gap: 0.75rem; align-items: flex-start; }
+  .contact-icon { font-size: 1.2rem; }
+  .contact-item .info-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #9B8060; }
+  .contact-item .info-val { font-size: 0.9rem; color: var(--charcoal); margin-top: 0.15rem; }
+
+  @media (max-width: 700px) {
+    .areas-layout { grid-template-columns: 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
+    .ingredients-grid { grid-template-columns: 1fr; }
+    nav { padding: 0 1rem; }
+    .nav-logo span { display: none; }
+    .nav-links a { padding: 0.5rem 0.6rem; font-size: 0.75rem; }
+    .hero h1 { font-size: 2.5rem; }
+    .recipe-body { padding: 0 1rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <img src="logo.jpeg" alt="Taste of Chennai Logo" class="nav-logo-icon">
+    <span>Taste of Chennai</span>
+  </div>
+  <div class="nav-links">
+    <a class="active" id="nav-home" onclick="showPage('home')">Home</a>
+    <a id="nav-restaurants" onclick="showPage('restaurants')">Restaurants</a>
+    <a id="nav-areas" onclick="showPage('areas')">Areas</a>
+    <a id="nav-about" onclick="showPage('about')">About</a>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-pattern"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-img"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Chennai's Food Guide</div>
+      <h1>Taste of<br><em>Chennai</em></h1>
+      <p>Your curated guide to the best authentic flavours, legendary eateries, and hidden gems across the city.</p>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="showPage('restaurants')">Explore Restaurants</button>
+        <button class="btn-outline" onclick="showPage('areas')">Find by Area</button>
+      </div>
+    </div>
+  </section>
+  <section class="features">
+    <div class="features-inner">
+      <div class="section-label">Why Use Us</div>
+      <h2 class="section-title">Your Complete Chennai<br>Food Companion</h2>
+      <div class="divider"></div>
+      <p class="section-sub">From crispy morning dosas to rich chettinad curries — we help you discover the authentic flavours that make Chennai unforgettable.</p>
+      <div class="features-grid">
+        <div class="feature-card"><div class="feature-icon">🍽️</div><h3>Curated Restaurants</h3><p>Handpicked eateries from iconic institutions to beloved neighbourhood spots.</p></div>
+        <div class="feature-card"><div class="feature-icon">📖</div><h3>Recipe Cards</h3><p>Click any menu item to instantly view a detailed authentic recipe card.</p></div>
+        <div class="feature-card"><div class="feature-icon">🗺️</div><h3>Area Explorer</h3><p>Find restaurants by neighbourhood across Chennai.</p></div>
+        <div class="feature-card"><div class="feature-icon">⭐</div><h3>Local Expertise</h3><p>Insights from Chennai food lovers who know every lane and every dish.</p></div>
+      </div>
+    </div>
+  </section>
+  <div class="cuisine-strip">
+    <h2>The Flavours of Chennai</h2>
+    <div class="tags">
+      <span class="tag">Idli & Sambar</span><span class="tag">Masala Dosa</span><span class="tag">Filter Coffee</span>
+      <span class="tag">Chettinad Curry</span><span class="tag">Pongal</span><span class="tag">Biryani</span>
+      <span class="tag">Rasam</span><span class="tag">Payasam</span><span class="tag">Vada</span>
+      <span class="tag">Appam</span><span class="tag">Paniyaram</span><span class="tag">Parotta</span>
+    </div>
+  </div>
+  <footer><p>© 2025 <strong>Taste of Chennai</strong>. Celebrating the flavours of the city.</p></footer>
+</div>
+
+<!-- RESTAURANTS -->
+<div id="page-restaurants" class="page">
+  <div class="page-header">
+    <div class="section-label">Dine in Chennai</div>
+    <h1>Popular Restaurants</h1>
+    <p>The city's most loved dining destinations</p>
+  </div>
+  <div class="restaurants-grid">
+    <div class="restaurant-card" onclick="showMenu('Murugan Idli Shop')">
+      <div class="restaurant-card-header" style="background:#E8590C;"></div>
+      <div class="restaurant-card-body"><div class="restaurant-card-num">01 · Vegetarian</div><h3>Murugan Idli Shop</h3><p>Chennai's most beloved idli institution. Soft, pillowy idlis with perfectly spiced sambar since 1971.</p></div>
+      <div class="restaurant-card-footer"><span>T. Nagar · Adyar</span><span class="arrow">→</span></div>
+    </div>
+    <div class="restaurant-card" onclick="showMenu('Buhari Hotel')">
+      <div class="restaurant-card-header" style="background:#8B1A1A;"></div>
+      <div class="restaurant-card-body"><div class="restaurant-card-num">02 · Non-Vegetarian</div><h3>Buhari Hotel</h3><p>A Chennai landmark for over 70 years, famed for biryani and classic South Indian non-veg fare.</p></div>
+      <div class="restaurant-card-footer"><span>Anna Salai</span><span class="arrow">→</span></div>
+    </div>
+    <div class="restaurant-card" onclick="showMenu('Sangeetha Veg Restaurant')">
+      <div class="restaurant-card-header" style="background:#D4860A;"></div>
+      <div class="restaurant-card-body"><div class="restaurant-card-num">03 · Vegetarian</div><h3>Sangeetha Veg Restaurant</h3><p>A Chennai staple for authentic South Indian vegetarian cuisine — from crispy dosas to full meals.</p></div>
+      <div class="restaurant-card-footer"><span>Multiple Locations</span><span class="arrow">→</span></div>
+    </div>
+    <div class="restaurant-card" onclick="showMenu('Saravana Bhavan')">
+      <div class="restaurant-card-header" style="background:#E8590C;"></div>
+      <div class="restaurant-card-body"><div class="restaurant-card-num">04 · Vegetarian</div><h3>Saravana Bhavan</h3><p>The legendary global chain that put Chennai vegetarian food on the world map. Consistently outstanding.</p></div>
+      <div class="restaurant-card-footer"><span>Citywide</span><span class="arrow">→</span></div>
+    </div>
+    <div class="restaurant-card" onclick="showMenu('Anjappar Chettinad Restaurant')">
+      <div class="restaurant-card-header" style="background:#8B1A1A;"></div>
+      <div class="restaurant-card-body"><div class="restaurant-card-num">05 · Chettinad</div><h3>Anjappar Chettinad</h3><p>Fiery, aromatic Chettinad cuisine with bold spices and traditional recipes passed through generations.</p></div>
+      <div class="restaurant-card-footer"><span>Egmore · Velachery</span><span class="arrow">→</span></div>
+    </div>
+    <div class="restaurant-card" onclick="showMenu('Ponnusamy Hotel')">
+      <div class="restaurant-card-header" style="background:#D4860A;"></div>
+      <div class="restaurant-card-body"><div class="restaurant-card-num">06 · Non-Vegetarian</div><h3>Ponnusamy Hotel</h3><p>Famous for pepper crab and quintessential Tamil non-veg dishes loved by locals for decades.</p></div>
+      <div class="restaurant-card-footer"><span>Egmore</span><span class="arrow">→</span></div>
+    </div>
+    <div class="restaurant-card" onclick="showMenu('Junior Kuppanna')">
+      <div class="restaurant-card-header" style="background:#E8590C;"></div>
+      <div class="restaurant-card-body"><div class="restaurant-card-num">07 · Traditional</div><h3>Junior Kuppanna</h3><p>Rustic, home-style Tamil meals served on banana leaves — the complete village food experience.</p></div>
+      <div class="restaurant-card-footer"><span>Anna Nagar · OMR</span><span class="arrow">→</span></div>
+    </div>
+    <div class="restaurant-card" onclick="showMenu('Rayar\'s Mess')">
+      <div class="restaurant-card-header" style="background:#8B1A1A;"></div>
+      <div class="restaurant-card-body"><div class="restaurant-card-num">08 · Heritage</div><h3>Rayar's Mess</h3><p>A Mylapore institution since 1940. Old-school mess culture, unbeatable sambar, legendary coffee.</p></div>
+      <div class="restaurant-card-footer"><span>Mylapore</span><span class="arrow">→</span></div>
+    </div>
+    <div class="restaurant-card" onclick="showMenu('Paati Veedu')">
+      <div class="restaurant-card-header" style="background:#D4860A;"></div>
+      <div class="restaurant-card-body"><div class="restaurant-card-num">09 · Home Style</div><h3>Paati Veedu</h3><p>Grandmother's kitchen come to life — comfort food, traditional recipes, and pure nostalgia on a plate.</p></div>
+      <div class="restaurant-card-footer"><span>Nungambakkam</span><span class="arrow">→</span></div>
+    </div>
+  </div>
+  <div class="marquee-bar">
+    <div class="marquee">🍛 New Restaurants Coming Soon! Stay tuned for more exciting additions to our guide &nbsp;&nbsp;&nbsp; 🍽️ Explore authentic Chennai cuisine &nbsp;&nbsp;&nbsp; ☕ From filter coffee to biryani — Chennai has it all!</div>
+  </div>
+  <footer><p>© 2025 <strong>Taste of Chennai</strong>. Celebrating the flavours of the city.</p></footer>
+</div>
+
+<!-- MENU PAGE -->
+<div id="page-menu" class="page">
+  <div class="page-header">
+    <div class="section-label" id="menu-restaurant-label">Restaurant Menu</div>
+    <h1 id="menu-title">Menu</h1>
+    <p>Click any dish to view its authentic recipe ✨</p>
+  </div>
+  <div class="menu-page" id="menu-content"></div>
+  <footer><p>© 2025 <strong>Taste of Chennai</strong>. Celebrating the flavours of the city.</p></footer>
+</div>
+
+<!-- AREAS PAGE -->
+<div id="page-areas" class="page">
+  <div class="page-header">
+    <div class="section-label">Explore the City</div>
+    <h1>Restaurants by Area</h1>
+    <p>Find great food in your neighbourhood</p>
+  </div>
+  <div class="areas-layout">
+    <div class="areas-sidebar">
+      <div class="areas-sidebar-title">📍 Choose an Area</div>
+      <ul class="area-list" id="area-list"></ul>
+    </div>
+    <div class="area-detail-panel">
+      <div class="area-empty" id="area-empty"><div class="area-empty-icon">🍛</div><p>Select an area to see restaurants</p></div>
+      <div id="area-detail-content" style="display:none;">
+        <div class="area-detail-header">
+          <h3 id="area-detail-title"></h3>
+          <span class="badge" id="area-detail-count"></span>
+        </div>
+        <div class="area-rest-cards" id="area-rest-cards"></div>
+        <div class="area-info"><p>Click a restaurant to view its menu and recipes</p></div>
+      </div>
+    </div>
+  </div>
+  <footer><p>© 2025 <strong>Taste of Chennai</strong>. Celebrating the flavours of the city.</p></footer>
+</div>
+
+<!-- ABOUT PAGE -->
+<div id="page-about" class="page">
+  <div class="page-header">
+    <div class="section-label">Our Story</div>
+    <h1>About Taste of Chennai</h1>
+    <p>A love letter to the city's extraordinary food culture</p>
+  </div>
+  <div class="about-layout">
+    <div class="about-hero">
+      <h2>🍛 Celebrating Chennai's Culinary Soul</h2>
+      <p>Taste of Chennai is a curated digital guide dedicated to exploring and celebrating the rich, diverse, and deeply rooted food culture of one of India's most vibrant cities. From 5 AM filter coffee to midnight biryani, we cover every chapter of Chennai's food story.</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-card"><h3>🎯 Our Mission</h3><p>We believe every meal tells a story. Our mission is to connect food lovers with Chennai's best culinary experiences — from legendary heritage institutions to neighbourhood hidden gems that don't show up on tourist maps.</p></div>
+      <div class="about-card"><h3>✨ What We Offer</h3><ul><li>Curated restaurant listings with rich context</li><li>Authentic recipe cards for every dish</li><li>Area-by-area exploration of the city</li><li>Honest, local-first recommendations</li><li>Cultural insight into Tamil food traditions</li></ul></div>
+      <div class="about-card"><h3>🌶️ Why Chennai?</h3><p>Chennai's food scene is unlike anywhere else — a city where a humble idli served with coconut chutney at 6 AM is as celebrated as a fine dining experience. It's a city where food is identity, ritual, and community.</p></div>
+      <div class="about-card"><h3>📍 Coverage</h3><ul><li>T. Nagar, Adyar, Mylapore</li><li>Anna Nagar, Nungambakkam</li><li>Egmore, Perambur, Velachery</li><li>OMR, ECR, Tambaram</li><li>Porur, Vadapalani, and more</li></ul></div>
+    </div>
+    <div class="contact-section">
+      <h3>📬 Contact Us</h3>
+      <div class="contact-grid">
+        <div class="contact-item"><span class="contact-icon">📧</span><div><div class="info-label">Email</div><div class="info-val">hello@tasteofchennai.in</div></div></div>
+        <div class="contact-item"><span class="contact-icon">📞</span><div><div class="info-label">Phone</div><div class="info-val">+91 98400 12345</div></div></div>
+        <div class="contact-item"><span class="contact-icon">📍</span><div><div class="info-label">Address</div><div class="info-val">42, Cathedral Road, Chennai – 600 086</div></div></div>
+        <div class="contact-item"><span class="contact-icon">🕐</span><div><div class="info-label">Hours</div><div class="info-val">Mon–Sat, 9 AM – 6 PM IST</div></div></div>
+      </div>
+    </div>
+  </div>
+  <footer><p>© 2025 <strong>Taste of Chennai</strong>. Celebrating the flavours of the city.</p></footer>
+</div>
+
+<!-- RECIPE OVERLAY -->
+<div class="recipe-overlay" id="recipe-overlay" onclick="closeRecipeOnOverlay(event)">
+  <div class="recipe-card" id="recipe-card">
+    <div id="recipe-content"></div>
+  </div>
+</div>
+
+<script>
+// ─── ALL RECIPES ─────────────────────────────────────────────────────────────
+const RECIPES = {
+  // BREAKFAST
+  "idli": {
+    emoji:"🍚", dish:"Idli", tagline:"Soft steamed rice cakes — the heartbeat of Chennai mornings",
+    prep:"8 hrs", cook:"15 mins", serves:"20 pcs", diff:"Medium",
+    tags:["Vegetarian","Gluten-Free","Steamed","Breakfast"],
+    ingredients:["2 cups idli rice (parboiled)","1 cup urad dal (split, skinless)","1 tsp fenugreek seeds","Salt to taste","Water as needed"],
+    steps:[
+      "Rinse idli rice and urad dal separately. Soak rice for 6 hours and dal with fenugreek seeds for 4 hours.",
+      "Grind urad dal to a very smooth, fluffy batter, adding water little by little. It should be light and airy.",
+      "Grind soaked rice to a slightly coarse batter (not too smooth).",
+      "Mix both batters together with salt. The consistency should coat the back of a spoon.",
+      "Cover and ferment in a warm spot for 8–12 hours until the batter doubles and is bubbly.",
+      "Grease idli moulds lightly with oil. Pour batter into each mould.",
+      "Steam for 10–12 minutes. A toothpick should come out clean.",
+      "Let rest 2 minutes before unmoulding. Serve hot with sambar and chutneys."
+    ],
+    tip:"The secret to cloud-soft idlis is well-fermented batter. In Chennai's climate, 8 hours at room temperature works perfectly."
+  },
+  "vada": {
+    emoji:"🍩", dish:"Medu Vada", tagline:"Crispy, golden, fluffy — the perfect South Indian fritter",
+    prep:"2 hrs 30 mins", cook:"25 mins", serves:"4", diff:"Medium",
+    tags:["Vegetarian","Deep Fried","Breakfast","Snack"],
+    ingredients:["1 cup urad dal (split, skinless)","2 green chillies, finely chopped","1 tsp whole black pepper, crushed","1 tsp cumin seeds","1 sprig curry leaves, chopped","1 small onion, finely chopped (optional)","1 tbsp fresh coconut, grated","Salt to taste","Oil for deep frying"],
+    steps:[
+      "Soak urad dal in water for 2–3 hours until soft.",
+      "Drain completely and grind to a very thick, smooth batter using minimal water. The batter must hold its shape.",
+      "Transfer to a wide bowl. Add green chillies, pepper, cumin, curry leaves, onion, coconut and salt. Mix well.",
+      "Refrigerate the batter for 15 minutes — this makes shaping easier.",
+      "Heat oil in a kadai to 170–175°C. Wet your palm with water.",
+      "Take a ball of batter, flatten on your palm and make a hole in the centre using your wet thumb.",
+      "Gently slide into the hot oil. Fry 3–4 at a time without crowding.",
+      "Fry on medium heat for 4–5 minutes each side until deep golden and crispy.",
+      "Drain on paper towels and serve immediately with sambar and coconut chutney."
+    ],
+    tip:"The drier the batter, the crispier the vada. Never add too much water while grinding."
+  },
+  "plain dosa": {
+    emoji:"🫓", dish:"Plain Dosa", tagline:"Thin, lacey and perfectly golden — a Chennai classic",
+    prep:"8 hrs", cook:"20 mins", serves:"4", diff:"Medium",
+    tags:["Vegetarian","Gluten-Free","Breakfast","Fermented"],
+    ingredients:["2 cups dosa rice (raw)","½ cup urad dal","½ tsp fenugreek seeds","Salt to taste","Water as needed","Oil or ghee for cooking"],
+    steps:[
+      "Soak rice, urad dal and fenugreek seeds together for 6 hours.",
+      "Grind to a smooth, flowing batter. It should pour easily — thinner than idli batter.",
+      "Add salt and ferment overnight (8–12 hours) until slightly tangy.",
+      "Heat a cast-iron tawa on high. Sprinkle a few drops of water — it should sizzle and evaporate.",
+      "Reduce flame to medium-high. Pour one ladle of batter at the centre.",
+      "Immediately spread in concentric circles to a thin, even round.",
+      "Drizzle ½ tsp oil around the edges and on the dosa.",
+      "Cook until the edges lift and the bottom is golden brown and crispy.",
+      "Fold in half or roll and serve with sambar and coconut chutney."
+    ],
+    tip:"A well-seasoned cast-iron tawa makes all the difference. Never wash it with soap — wipe clean with a damp cloth."
+  },
+  "masala dosa": {
+    emoji:"🌯", dish:"Masala Dosa", tagline:"Crispy dosa wrapped around a spiced potato filling",
+    prep:"8 hrs", cook:"30 mins", serves:"4", diff:"Medium",
+    tags:["Vegetarian","Gluten-Free","Breakfast","Classic"],
+    ingredients:[
+      "Dosa batter (fermented — same as Plain Dosa)",
+      "4 medium potatoes, boiled and mashed roughly","2 onions, thinly sliced","2 green chillies, slit","1 tsp mustard seeds","½ tsp turmeric powder","1 sprig curry leaves","2 tbsp oil","Salt to taste","Fresh coriander, chopped",
+      "Oil or ghee for cooking"
+    ],
+    steps:[
+      "Make the masala: Heat oil in a pan. Splutter mustard seeds, add curry leaves and green chillies.",
+      "Fry onions until translucent and golden. Add turmeric and mix well.",
+      "Add mashed potatoes, salt and coriander. Mix thoroughly and cook 3 minutes. Set aside.",
+      "Heat tawa on high, reduce to medium-high. Pour batter and spread thin.",
+      "Drizzle oil on edges. When base is golden, spread 1–2 tsp red chutney (optional) on the dosa.",
+      "Place 2–3 tbsp of potato masala along the centre.",
+      "Fold the dosa over the filling and roll into a cylinder.",
+      "Serve hot with sambar and coconut chutney."
+    ],
+    tip:"The masala should be well-seasoned and slightly dry. Wet masala makes the dosa soggy."
+  },
+  "rava dosa": {
+    emoji:"🥞", dish:"Rava Dosa", tagline:"Instant, lacy and wonderfully crispy — no fermentation needed",
+    prep:"30 mins", cook:"20 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Instant","Breakfast","Crispy"],
+    ingredients:["½ cup fine semolina (rava)","¼ cup rice flour","2 tbsp all-purpose flour","1 green chilli, finely chopped","1 tsp cumin seeds","½ tsp black pepper, crushed","1 sprig curry leaves, chopped","1 small onion, finely chopped","Salt to taste","2½ cups water","Oil for cooking"],
+    steps:[
+      "Mix semolina, rice flour and all-purpose flour in a bowl.",
+      "Add green chilli, cumin, pepper, curry leaves, onion and salt.",
+      "Pour in water gradually, whisking to make a thin, lump-free batter. It should flow like water.",
+      "Rest for 20–25 minutes. The batter will thicken slightly — add more water to keep it thin.",
+      "Heat a non-stick tawa on high. Drizzle oil generously across the surface.",
+      "Pour batter from the edges inward — do NOT spread with a ladle. Let it form its own lacy pattern.",
+      "Drizzle oil on top. Cook on medium-high until the edges lift and the base is golden and crispy.",
+      "Fold and serve immediately with coconut chutney and sambar."
+    ],
+    tip:"The batter must be very thin — almost watery. Pouring from height gives the classic rava dosa holes."
+  },
+  "pongal": {
+    emoji:"🍲", dish:"Ven Pongal", tagline:"Creamy rice-lentil comfort food kissed with ghee and pepper",
+    prep:"10 mins", cook:"30 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Gluten-Free","Breakfast","Comfort Food"],
+    ingredients:["1 cup raw rice","½ cup split moong dal","3 tbsp ghee","1 tsp whole black pepper","1 tsp cumin seeds","1-inch ginger, grated","1 sprig curry leaves","10–12 cashew nuts","Salt to taste","4 cups water"],
+    steps:[
+      "Dry roast moong dal in a pot on medium heat until light golden and fragrant. Remove and set aside.",
+      "Add rice and roasted dal to a pressure cooker. Rinse with water.",
+      "Add 4 cups water, grated ginger and salt. Pressure cook for 4–5 whistles until very soft and mushy.",
+      "In a small pan, heat ghee. Fry cashews until golden, remove.",
+      "In the same ghee, add black pepper, cumin and curry leaves. Let them splutter.",
+      "Pour the tempering ghee over the cooked rice-dal mixture.",
+      "Mash gently and mix well. Add fried cashews on top.",
+      "Add more ghee if needed — pongal should be moist and creamy.",
+      "Serve hot with coconut chutney, sambar and vada."
+    ],
+    tip:"Don't hold back on ghee — Pongal should be indulgently rich. Use freshly cracked black pepper for the best flavour."
+  },
+  "upma": {
+    emoji:"🥣", dish:"Rava Upma", tagline:"Fluffy, savoury semolina tempered with South Indian spices",
+    prep:"5 mins", cook:"20 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Quick","Breakfast","Savoury"],
+    ingredients:["1 cup coarse semolina (rava)","2 cups water","1 tbsp oil","1 tbsp ghee","1 tsp mustard seeds","1 tsp urad dal","1 tsp chana dal","2 green chillies, slit","1-inch ginger, finely chopped","1 onion, finely chopped","1 sprig curry leaves","Salt to taste","2 tbsp fresh coconut, grated","Fresh coriander to garnish"],
+    steps:[
+      "Dry roast semolina on low heat, stirring constantly, until it turns slightly golden and nutty-smelling. Set aside.",
+      "Heat oil and ghee in a kadai. Splutter mustard seeds, then add urad and chana dal.",
+      "Fry until dals turn golden. Add green chillies, ginger and curry leaves.",
+      "Add onions and fry until translucent and soft.",
+      "Pour in 2 cups of water and add salt. Bring to a rolling boil.",
+      "Reduce heat to low. Pour roasted semolina in a steady stream, stirring continuously to prevent lumps.",
+      "Cover and cook on low heat for 3–4 minutes until semolina is fully cooked.",
+      "Add ghee, coconut and mix. Garnish with coriander and serve hot."
+    ],
+    tip:"Roasting the semolina well prevents a sticky, gluey texture. Each grain should remain distinct after cooking."
+  },
+  "poori with potato masala": {
+    emoji:"🫔", dish:"Poori with Potato Masala", tagline:"Puffed golden bread with Tamil-style spiced potato curry",
+    prep:"30 mins", cook:"30 mins", serves:"4", diff:"Medium",
+    tags:["Vegetarian","Deep Fried","Breakfast","Weekend Special"],
+    ingredients:[
+      "For Poori: 2 cups whole wheat flour, ½ tsp salt, 1 tsp oil, water to knead, oil for frying",
+      "For Masala: 4 potatoes (boiled, peeled, roughly mashed)","2 onions, thinly sliced","2 green chillies, slit","1 tsp mustard seeds","½ tsp turmeric","1 sprig curry leaves","2 tbsp oil","Salt to taste","Fresh coriander"
+    ],
+    steps:[
+      "Make dough: Combine flour, salt and oil. Add water gradually and knead to a stiff, smooth dough. Cover and rest 20 minutes.",
+      "Make masala: Heat oil, splutter mustard, add curry leaves and chillies. Fry onions golden.",
+      "Add turmeric, mashed potato and salt. Mix well and cook 3–4 minutes. Add coriander.",
+      "Divide dough into lemon-sized balls. Roll into thick discs (not too thin).",
+      "Heat oil in a kadai to 175°C. Slide in one poori at a time.",
+      "Gently press the poori with a slotted spoon — it will puff up dramatically.",
+      "Flip and fry the other side for 30 seconds until golden.",
+      "Drain and serve immediately with potato masala."
+    ],
+    tip:"The dough should be stiffer than chapati dough. Soft dough will absorb too much oil and not puff properly."
+  },
+
+  // LUNCH
+  "south indian meals": {
+    emoji:"🍱", dish:"South Indian Meals", tagline:"The grand banana leaf thali — a complete Tamil tradition",
+    prep:"1 hr", cook:"1 hr", serves:"4", diff:"Advanced",
+    tags:["Vegetarian","Gluten-Free","Traditional","Festival Food"],
+    ingredients:["2 cups rice (cooked)","1 cup toor dal (for sambar)","1 cup tamarind water","Tomatoes, shallots, drumstick for sambar","Coconut for chutneys","Seasonal vegetables for kootu or poriyal","1 cup yogurt (curd)","Pickle and papadum to serve","Ghee for finishing"],
+    steps:[
+      "Cook rice until soft and fluffy. Keep warm.",
+      "Make sambar: Cook toor dal with tomato until soft. Blend tamarind water with sambar powder, add to dal with vegetables. Boil 15 minutes. Temper with mustard seeds, dried red chilli and curry leaves.",
+      "Make rasam: Dilute tamarind, add pepper-cumin powder, tomatoes and coriander. Boil 10 minutes and temper.",
+      "Make a dry vegetable poriyal: Sauté vegetables with mustard, urad dal, curry leaves, turmeric and freshly grated coconut.",
+      "Make coconut chutney: Grind coconut, green chilli, ginger and salt. Temper with mustard and curry leaves.",
+      "Arrange on a banana leaf (or plate): rice at the centre, sambar, rasam, poriyal, curd, pickle and papadum around it.",
+      "Add a ladle of ghee over the rice.",
+      "Pour sambar over rice and begin. Traditionally eaten with hands."
+    ],
+    tip:"A proper meals plate always follows a sequence: start with rice and sambar, then poriyal, then rasam rice, finish with curd rice."
+  },
+  "mini meals": {
+    emoji:"🍽️", dish:"Mini Meals", tagline:"A smaller, lighter version of the traditional South Indian thali",
+    prep:"30 mins", cook:"45 mins", serves:"4", diff:"Medium",
+    tags:["Vegetarian","Gluten-Free","Lunch","Light"],
+    ingredients:["1 cup rice (cooked)","½ cup toor dal","Tamarind, tomatoes for sambar","1 vegetable for poriyal","Coconut for chutney","Yogurt","1 papadum","Ghee"],
+    steps:[
+      "Cook rice and keep warm.",
+      "Make a quick sambar with toor dal, tamarind, tomatoes and sambar powder. Cook 20 minutes.",
+      "Prepare a simple poriyal: fry beans or carrots with mustard seeds, urad dal, turmeric and coconut.",
+      "Fry or microwave a papadum.",
+      "Arrange a smaller portion on the plate: a cup of rice, 2 ladles of sambar, a serving of poriyal, curd and chutney.",
+      "Finish with a drizzle of ghee.",
+      "Serve with a papadum on the side."
+    ],
+    tip:"Mini meals are ideal for a quick but nourishing lunch. Quality sambar makes or breaks the plate."
+  },
+  "sambar rice": {
+    emoji:"🍛", dish:"Sambar Rice", tagline:"One-pot comfort — rice and sambar cooked together to perfection",
+    prep:"10 mins", cook:"25 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Gluten-Free","One Pot","Comfort Food"],
+    ingredients:["1 cup rice","½ cup toor dal","1 tbsp sambar powder","1 tbsp tamarind paste","2 tomatoes, chopped","1 onion, chopped","1 drumstick, cut","1 tsp mustard seeds","1 sprig curry leaves","2 dried red chillies","2 tbsp oil","½ tsp turmeric","Salt to taste","Fresh coriander"],
+    steps:[
+      "Pressure cook rice and toor dal together with 3 cups water for 4 whistles until very soft.",
+      "In a separate pan, heat oil. Splutter mustard, add red chillies and curry leaves.",
+      "Add onions and tomatoes; fry until soft.",
+      "Add sambar powder, turmeric and tamarind paste. Cook 5 minutes.",
+      "Add drumstick pieces and ¼ cup water. Cook until drumstick is soft.",
+      "Mash the cooked rice-dal mixture roughly.",
+      "Pour the sambar mix into the rice-dal. Add salt and mix well.",
+      "Cook together for 5 minutes until everything is well combined.",
+      "Finish with ghee and fresh coriander. Serve with papadum and pickle."
+    ],
+    tip:"The rice-dal ratio should be equal. More sambar powder gives a bolder flavour — adjust to your spice level."
+  },
+  "curd rice": {
+    emoji:"🥛", dish:"Curd Rice", tagline:"Cool, creamy, temple-blessed rice — Chennai's greatest comfort",
+    prep:"5 mins", cook:"15 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Gluten-Free","No-Spice","Comfort Food"],
+    ingredients:["2 cups cooked rice (soft)","1½ cups full-fat yogurt","¼ cup milk","1 tsp mustard seeds","1 tsp urad dal","2 green chillies, finely chopped","1 sprig curry leaves","1 tbsp oil","2 tbsp grated ginger","Salt to taste","Pomegranate or grapes to garnish (optional)","Fresh coriander"],
+    steps:[
+      "Mash cooked rice well while still slightly warm.",
+      "Add yogurt and milk. Mix thoroughly until smooth and creamy.",
+      "Add salt and set aside.",
+      "Heat oil in a small pan. Splutter mustard seeds, then add urad dal until golden.",
+      "Add green chillies, ginger and curry leaves. Fry 30 seconds.",
+      "Pour tempering over the curd rice and mix well.",
+      "Adjust consistency with more yogurt if needed — it should be moist and creamy.",
+      "Garnish with pomegranate seeds or grapes and serve at room temperature or chilled."
+    ],
+    tip:"Curd rice should be made just before eating. It thickens as it sits — always keep extra yogurt handy."
+  },
+  "lemon rice": {
+    emoji:"🍋", dish:"Lemon Rice", tagline:"Zesty, sunshine-bright rice with a turmeric glow",
+    prep:"5 mins", cook:"15 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Gluten-Free","Quick","Travel-Friendly"],
+    ingredients:["2 cups cooked rice (cooled)","3 tbsp fresh lemon juice","1 tsp mustard seeds","1 tsp urad dal","1 tsp chana dal","2 green chillies, slit","1 sprig curry leaves","½ tsp turmeric","2 tbsp oil","10 cashew nuts or peanuts","Salt to taste","Fresh coriander"],
+    steps:[
+      "Ensure cooked rice is completely cooled and grain-separated (not clumped).",
+      "Heat oil in a wide kadai. Fry cashews or peanuts until golden. Remove and set aside.",
+      "Add mustard seeds and let splutter. Add urad dal and chana dal; fry until golden.",
+      "Add green chillies, curry leaves and turmeric. Stir quickly.",
+      "Add the cooked rice to the pan. Mix gently to coat every grain with turmeric.",
+      "Pour lemon juice over the rice and toss well.",
+      "Add salt, mix again and cook on low heat for 2 minutes.",
+      "Garnish with fried cashews and coriander. Serve warm or at room temperature."
+    ],
+    tip:"Don't cook lemon juice — add it off-heat or just before serving to keep the fresh, bright flavour."
+  },
+  "tomato rice": {
+    emoji:"🍅", dish:"Tomato Rice", tagline:"Tangy, deeply flavoured rice cooked in a rich tomato base",
+    prep:"10 mins", cook:"25 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Gluten-Free","Tangy","Lunch Box"],
+    ingredients:["1 cup raw rice","3 large tomatoes, chopped","1 onion, thinly sliced","2 green chillies, slit","1 tsp mustard seeds","1 tsp urad dal","½ tsp turmeric","1 tsp red chilli powder","1 tsp coriander powder","1 sprig curry leaves","2 tbsp oil","Salt to taste","Fresh coriander"],
+    steps:[
+      "Cook rice and spread on a wide plate to cool. Each grain should be separate.",
+      "Heat oil in a kadai. Splutter mustard seeds, add urad dal until golden.",
+      "Add curry leaves and green chillies. Add onions and fry until golden brown.",
+      "Add tomatoes and cook on medium heat until completely soft and pulpy.",
+      "Add turmeric, red chilli powder and coriander powder. Fry 2 minutes.",
+      "Cook until the tomato masala leaves oil on the sides — this is key.",
+      "Add cooked rice and toss gently. Mix until every grain is well coated.",
+      "Add salt, garnish with coriander and serve with raita or papadum."
+    ],
+    tip:"Cook the tomatoes until completely broken down and the masala is thick — watery masala will make the rice mushy."
+  },
+  "vegetable biryani": {
+    emoji:"🍚", dish:"Vegetable Biryani", tagline:"Fragrant, layered and gloriously spiced — a South Indian celebration",
+    prep:"45 mins", cook:"45 mins", serves:"6", diff:"Advanced",
+    tags:["Vegetarian","Fragrant","Celebration","Rice"],
+    ingredients:["2 cups basmati rice","2 cups mixed vegetables (carrot, beans, peas, potato)","2 onions, thinly sliced","2 tomatoes, chopped","½ cup yogurt","2 tbsp biryani masala","1 tsp cumin seeds","Whole spices: bay leaf, cloves, cardamom, cinnamon","4 tbsp oil or ghee","Fresh mint and coriander","Saffron soaked in warm milk","Salt to taste"],
+    steps:[
+      "Soak basmati rice 30 minutes. Par-cook in boiling salted water with whole spices until 70% done. Drain and set aside.",
+      "Fry sliced onions in oil until deep golden brown and crispy. Remove half for garnish.",
+      "In the remaining oil, add cumin, tomatoes and cook until soft.",
+      "Add vegetables, yogurt and biryani masala. Cook 10 minutes until partially tender.",
+      "Layer: spread the vegetable gravy as the base in a heavy pot.",
+      "Top with half the rice. Sprinkle mint and coriander.",
+      "Add remaining rice on top. Drizzle saffron milk and ghee. Top with fried onions.",
+      "Cover tightly (use dough to seal if needed) and cook on very low heat (dum) for 20 minutes.",
+      "Open gently, mix the layers lightly and serve with raita and mirchi ka salan."
+    ],
+    tip:"The dum (slow steam) is what makes biryani extraordinary. Don't rush it — patience is the secret ingredient."
+  },
+  "chapati with kurma": {
+    emoji:"🫓", dish:"Chapati with Vegetable Kurma", tagline:"Soft whole-wheat flatbread with a rich, creamy coconut kurma",
+    prep:"30 mins", cook:"30 mins", serves:"4", diff:"Medium",
+    tags:["Vegetarian","North-South Fusion","Mild","Dinner"],
+    ingredients:[
+      "For Chapati: 2 cups whole wheat flour, ½ tsp salt, 1 tsp oil, warm water to knead",
+      "For Kurma: 2 cups mixed vegetables (potato, carrot, beans)","1 onion, ground to paste","2 tomatoes, pureed","½ cup fresh coconut, grated","½ cup cashews (soaked)","1 tbsp kurma powder or garam masala","1 tsp cumin seeds","2 tbsp oil","Salt and fresh coriander"
+    ],
+    steps:[
+      "Make chapati dough: Mix flour, salt and oil. Knead with warm water to a soft, smooth dough. Rest 20 minutes.",
+      "Grind coconut and soaked cashews with a little water to a smooth, creamy paste.",
+      "Heat oil, fry cumin, add onion paste and cook until golden.",
+      "Add tomato puree and kurma powder. Cook until oil separates.",
+      "Add vegetables and 1 cup water. Cook until vegetables are tender.",
+      "Stir in coconut-cashew paste and simmer 10 minutes. Add salt and coriander.",
+      "Divide dough into balls, roll thin. Cook on a hot tawa each side 45 seconds until brown spots appear.",
+      "Apply ghee on hot chapati. Serve with the creamy kurma."
+    ],
+    tip:"The coconut-cashew paste makes the kurma silky. Add it at the end and don't boil too hard or it can split."
+  },
+
+  // DINNER
+  "ghee roast dosa": {
+    emoji:"🥇", dish:"Ghee Roast Dosa", tagline:"Ultra-crispy, richly golden dosa drenched in pure ghee",
+    prep:"8 hrs", cook:"15 mins", serves:"4", diff:"Medium",
+    tags:["Vegetarian","Indulgent","Crispy","Dinner"],
+    ingredients:["Fermented dosa batter (same as plain dosa)","Pure ghee (generous amount)","Salt to taste"],
+    steps:[
+      "Ensure dosa batter is well-fermented and at room temperature.",
+      "Heat tawa to high. Test by sprinkling water — it should evaporate instantly.",
+      "Pour one ladle of batter and spread into a very thin circle.",
+      "Immediately drizzle 1–2 tsp ghee generously all over the dosa surface.",
+      "Reduce heat slightly. Let the dosa cook until the edges turn brown and start to lift.",
+      "The bottom should be deeply golden and crispy — almost glass-like.",
+      "Don't flip a ghee roast — cook only on one side for that signature thin crunch.",
+      "Fold in half and serve immediately. The ghee should sizzle as you eat it."
+    ],
+    tip:"True ghee roast uses only ghee — no oil. And it must be served the instant it comes off the pan. Waiting kills the crunch."
+  },
+  "onion uttapam": {
+    emoji:"🧅", dish:"Onion Uttapam", tagline:"Thick, soft pancakes topped with caramelised onions and chillies",
+    prep:"8 hrs", cook:"20 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Gluten-Free","Soft","Dinner"],
+    ingredients:["2 cups fermented dosa/idli batter","2 large onions, finely chopped","2 green chillies, finely chopped","1 tomato, finely diced","Fresh coriander leaves","Oil for cooking","Salt to taste"],
+    steps:[
+      "Mix a little salt into the fermented batter if not already added.",
+      "Mix together onions, green chillies, tomato and coriander in a bowl.",
+      "Heat a tawa on medium. Grease lightly with oil.",
+      "Pour a slightly thicker round of batter (don't spread too thin — uttapam should be thick).",
+      "Immediately scatter the onion mixture over the top and press lightly.",
+      "Drizzle oil around the edges and on top.",
+      "Cover and cook on medium-low heat for 3–4 minutes until the bottom is golden.",
+      "Flip carefully and cook the onion side for 2 minutes.",
+      "Serve hot with coconut chutney and sambar."
+    ],
+    tip:"Use slightly thick batter for uttapam — thinner than idli batter but thicker than dosa batter."
+  },
+  "set dosa": {
+    emoji:"🥞", dish:"Set Dosa", tagline:"Soft, spongy and served in sets of three — a Karnataka-Tamil classic",
+    prep:"8 hrs", cook:"20 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Soft","Dinner","Mild"],
+    ingredients:["1 cup raw rice","½ cup beaten rice (poha)","¼ cup urad dal","¼ tsp fenugreek seeds","Salt to taste","Oil for cooking"],
+    steps:[
+      "Soak raw rice, urad dal and fenugreek seeds for 6 hours.",
+      "Soak poha separately for 30 minutes until soft.",
+      "Grind all together to a smooth, slightly thick batter.",
+      "Ferment overnight until the batter is soft and airy.",
+      "Heat tawa on medium-low. Grease lightly.",
+      "Pour a thick, small round — set dosa should be thick and soft, not thin.",
+      "Cover and cook for 2–3 minutes until the top is set and the bottom is lightly golden.",
+      "Do not flip — serve as is. Each serving has 3 dosas, hence 'set'.",
+      "Serve with coconut chutney and a spicy vegetable sagu."
+    ],
+    tip:"Set dosa is never crispy — it should be spongy and soft like a thick pancake. Low heat and covering is key."
+  },
+  "paneer butter masala": {
+    emoji:"🧀", dish:"Paneer Butter Masala", tagline:"Rich, creamy tomato-butter gravy with soft cubes of cottage cheese",
+    prep:"15 mins", cook:"30 mins", serves:"4", diff:"Medium",
+    tags:["Vegetarian","North Indian","Rich","Dinner"],
+    ingredients:["250g paneer, cubed","4 tomatoes, pureed","1 onion, roughly chopped","½ cup cashews (soaked 20 mins)","2 tbsp butter","1 tbsp oil","1 tsp cumin seeds","1 tsp garam masala","1 tsp red chilli powder","1 tsp kasuri methi (dried fenugreek)","½ cup cream","Salt and sugar to taste","Fresh coriander"],
+    steps:[
+      "Sauté onions in oil until golden. Add tomato puree and cook until thick.",
+      "Blend the onion-tomato mixture with soaked cashews into a smooth, silky paste.",
+      "Heat butter in a pan. Add cumin seeds. Pour in the blended paste and cook 5 minutes.",
+      "Add red chilli powder, garam masala and salt. Cook until butter separates.",
+      "Add ½ cup water and bring to a simmer.",
+      "Add paneer cubes and simmer 5 minutes.",
+      "Stir in cream and crushed kasuri methi. Add a pinch of sugar.",
+      "Cook 2 minutes. Garnish with coriander and a drizzle of cream."
+    ],
+    tip:"Soaking cashews makes the gravy extra silky. Don't skimp on butter — it's what makes this dish butter masala."
+  },
+  "butter naan": {
+    emoji:"🫓", dish:"Butter Naan", tagline:"Pillowy, charred flatbread slathered with melting butter",
+    prep:"1.5 hrs", cook:"15 mins", serves:"4", diff:"Medium",
+    tags:["Vegetarian","Baked","Indulgent","Dinner"],
+    ingredients:["2 cups all-purpose flour","½ tsp baking powder","¼ tsp baking soda","1 tsp sugar","½ tsp salt","¼ cup yogurt","¼ cup warm milk","1 tbsp oil","2 tbsp butter (for finishing)","Nigella seeds and coriander for topping"],
+    steps:[
+      "Mix flour, baking powder, baking soda, sugar and salt in a bowl.",
+      "Add yogurt, warm milk and oil. Mix and knead to a soft, smooth dough.",
+      "Cover with a damp cloth and rest for 1–1.5 hours.",
+      "Divide into 6–8 balls. Roll each into a teardrop or oval shape, about 5mm thick.",
+      "Sprinkle nigella seeds and coriander on top and press lightly.",
+      "If using a tawa: cook on high heat one side until bubbles appear. Flip to a flame or continue on tawa until charred spots appear.",
+      "If using an oven: bake at 250°C on a preheated baking tray for 5–6 minutes until puffed.",
+      "Remove and immediately brush generously with melted butter."
+    ],
+    tip:"The char is essential — naan without dark spots isn't authentic. Cook on the highest heat possible."
+  },
+  "veg fried rice": {
+    emoji:"🍳", dish:"Vegetable Fried Rice", tagline:"Indo-Chinese wok-tossed rice with colourful vegetables",
+    prep:"15 mins", cook:"15 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Indo-Chinese","Quick","Dinner"],
+    ingredients:["2 cups cooked rice (cooled, day-old preferred)","½ cup carrot, finely diced","½ cup French beans, finely chopped","½ cup capsicum, diced","½ cup spring onion, chopped","2 eggs (optional)","2 tbsp soy sauce","1 tsp vinegar","1 tsp pepper powder","2 tbsp oil","Garlic, 4 cloves minced","Salt to taste"],
+    steps:[
+      "Ensure rice is cold and grain-separated. Freshly cooked rice will be mushy.",
+      "Heat a wok or wide pan to very high heat. Add oil — it should smoke slightly.",
+      "Add minced garlic and fry 30 seconds. Add carrots and beans, stir-fry on high heat 2 minutes.",
+      "Add capsicum and spring onion whites. Stir-fry 1 more minute.",
+      "If using eggs: push vegetables aside, scramble eggs in the pan, then mix in.",
+      "Add cold rice and toss everything vigorously on high heat.",
+      "Add soy sauce, vinegar, pepper and salt. Toss well for 2–3 minutes.",
+      "Garnish with spring onion greens and serve hot."
+    ],
+    tip:"High heat and speed is the secret to restaurant-style fried rice. Never cover the wok — steam makes rice soggy."
+  },
+  "veg noodles": {
+    emoji:"🍜", dish:"Vegetable Hakka Noodles", tagline:"Smoky, tangy Indo-Chinese noodles tossed with fresh vegetables",
+    prep:"15 mins", cook:"15 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Indo-Chinese","Quick","Dinner"],
+    ingredients:["200g Hakka noodles","½ cup carrot, julienned","½ cup cabbage, shredded","½ cup capsicum, julienned","¼ cup spring onion","4 cloves garlic, minced","2 tbsp soy sauce","1 tbsp chilli sauce","1 tsp vinegar","1 tsp pepper","2 tbsp oil","Salt to taste"],
+    steps:[
+      "Boil noodles until just cooked (al dente). Drain, toss with 1 tsp oil to prevent sticking. Spread to cool.",
+      "Heat wok to high. Add oil — smoke should rise.",
+      "Add garlic and fry 20 seconds. Add carrot and stir-fry 1 minute.",
+      "Add cabbage and capsicum. Toss on high heat 2 minutes.",
+      "Add cooked noodles and toss vigorously.",
+      "Add soy sauce, chilli sauce, vinegar, pepper and salt. Toss well.",
+      "Cook on high heat 2 more minutes until slightly smoky.",
+      "Garnish with spring onion greens. Serve immediately."
+    ],
+    tip:"The wok must be searingly hot. The smoky char flavour (wok hei) is what makes Indo-Chinese noodles special."
+  },
+
+  // HOT BEVERAGES
+  "filter coffee": {
+    emoji:"☕", dish:"Filter Coffee", tagline:"The soul of Chennai in a small steel tumbler",
+    prep:"10 mins", cook:"5 mins", serves:"2", diff:"Medium",
+    tags:["Vegetarian","Hot","Beverage","Traditional"],
+    ingredients:["4 tbsp finely ground coffee powder (80% coffee, 20% chicory)","4 tbsp water (for brewing)","1 cup full-fat milk","2–3 tsp sugar (or to taste)"],
+    steps:[
+      "Add ground coffee to the upper filter compartment of a South Indian filter device.",
+      "Pour 4 tbsp of boiling water over the coffee grounds. Do not stir.",
+      "Place the lid on top and allow to decoct slowly for 8–10 minutes.",
+      "A dark, thick, aromatic decoction will drip into the lower chamber.",
+      "Heat milk until just below boiling — it should be very hot.",
+      "Pour 2–3 tbsp of decoction into a steel tumbler.",
+      "Pour hot milk over it and add sugar.",
+      "For the froth: pour the coffee back and forth between the tumbler and the dabara (small bowl) from a height several times until frothy.",
+      "Serve in the tumbler-dabara set at the correct temperature — very hot."
+    ],
+    tip:"Chennai filter coffee uses a chicory blend, not pure coffee. The chicory gives it the characteristic dark colour and slightly bitter-sweet depth."
+  },
+  "masala tea": {
+    emoji:"🫖", dish:"Masala Chai", tagline:"Warming spiced tea simmered to perfection",
+    prep:"5 mins", cook:"10 mins", serves:"2", diff:"Easy",
+    tags:["Vegetarian","Hot","Spiced","Beverage"],
+    ingredients:["1 cup water","1 cup full-fat milk","2 tsp black tea powder","2–3 tsp sugar","2 green cardamom pods, crushed","1 small piece ginger, crushed","2 cloves","1 small cinnamon stick","½ tsp fennel seeds (optional)"],
+    steps:[
+      "Bring water to a boil in a saucepan.",
+      "Add crushed cardamom, ginger, cloves, cinnamon and fennel seeds.",
+      "Add tea powder and boil on medium heat for 2 minutes.",
+      "Pour in milk and bring back to a boil, stirring.",
+      "As it rises, reduce heat. Let simmer 3–4 minutes until deeply coloured and fragrant.",
+      "Add sugar and stir.",
+      "Strain through a fine sieve into cups.",
+      "Serve piping hot."
+    ],
+    tip:"Simmer after adding milk — don't just heat briefly. The longer simmer deepens the spice flavour and gives a fuller body."
+  },
+  "badam milk": {
+    emoji:"🥛", dish:"Badam Milk", tagline:"Saffron-scented almond milk — luxuriously warming",
+    prep:"2 hrs", cook:"15 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Hot","Festive","Beverage"],
+    ingredients:["30 raw almonds","4 cups full-fat milk","¼ tsp saffron strands","3 tbsp sugar or to taste","¼ tsp cardamom powder","1 tbsp pistachio, sliced (for garnish)","1 tsp rose water (optional)"],
+    steps:[
+      "Soak almonds in hot water for 2 hours. Peel the skins off easily.",
+      "Blend peeled almonds with ½ cup milk to a smooth, fine paste.",
+      "Soak saffron in 2 tbsp warm milk for 10 minutes until the milk turns golden.",
+      "Heat remaining milk in a heavy pan on medium heat.",
+      "Stir in almond paste and bring to a gentle boil, stirring constantly.",
+      "Add saffron milk, sugar and cardamom powder.",
+      "Simmer 10 minutes, stirring, until the milk thickens slightly.",
+      "Add rose water if using. Pour into glasses and garnish with pistachios."
+    ],
+    tip:"Peel almonds while they are warm from soaking — the skins slip off effortlessly. Never use almond flour — fresh-blended almonds taste incomparably better."
+  },
+  "hot chocolate": {
+    emoji:"🍫", dish:"South Indian Hot Chocolate", tagline:"Spiced, thick hot chocolate with a hint of cardamom",
+    prep:"5 mins", cook:"10 mins", serves:"2", diff:"Easy",
+    tags:["Vegetarian","Comfort","Sweet","Beverage"],
+    ingredients:["2 cups full-fat milk","2 tbsp good quality cocoa powder","2 tbsp sugar","¼ tsp cardamom powder","1 small cinnamon stick","Pinch of salt","2 squares dark chocolate (optional, for richness)","Whipped cream to serve (optional)"],
+    steps:[
+      "Mix cocoa powder with 2 tbsp warm milk to make a smooth paste — this prevents lumps.",
+      "Heat remaining milk in a saucepan with cinnamon stick.",
+      "Stir in cocoa paste and bring to a gentle simmer.",
+      "Add sugar, cardamom and salt. Stir until dissolved.",
+      "If using dark chocolate, stir in now until melted.",
+      "Simmer 3–4 minutes until slightly thickened and deeply chocolatey.",
+      "Remove cinnamon stick and pour into mugs.",
+      "Top with whipped cream if desired."
+    ],
+    tip:"The cardamom lift transforms ordinary hot chocolate into something distinctly South Indian and deeply aromatic."
+  },
+
+  // COLD BEVERAGES
+  "fresh lime juice": {
+    emoji:"🍋", dish:"Fresh Lime Juice", tagline:"Sweet, salty or both — Chennai's everyday cooler",
+    prep:"5 mins", cook:"0 mins", serves:"2", diff:"Easy",
+    tags:["Vegetarian","Cold","Refreshing","Summer"],
+    ingredients:["3 limes","2–3 tbsp sugar (for sweet) or 1 tsp black salt (for salted)","1 cup cold water","Ice cubes","A pinch of chaat masala (optional)","Fresh mint leaves"],
+    steps:[
+      "Squeeze all the juice from the limes. Remove seeds.",
+      "For sweet lime juice: Dissolve sugar in 2 tbsp warm water to make sugar syrup. Cool before using.",
+      "For salted lime juice: Mix lime juice with black salt, regular salt, and a pinch of chaat masala.",
+      "For sweet-salted: Combine both styles.",
+      "Pour lime juice into tall glasses filled with ice.",
+      "Add cold water and mix well.",
+      "Garnish with a lime slice and fresh mint leaves.",
+      "Serve immediately."
+    ],
+    tip:"Freshly squeezed lime juice beats any concentrate. The sweet-salted version is the most popular in Chennai restaurants."
+  },
+  "mango juice": {
+    emoji:"🥭", dish:"Fresh Mango Juice", tagline:"The king of fruits, gloriously liquid",
+    prep:"10 mins", cook:"0 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Cold","Seasonal","Summer"],
+    ingredients:["4 ripe Alphonso or Banganapalli mangoes","4 tbsp sugar or honey (adjust to sweetness of mango)","2 cups water or milk","½ tsp cardamom powder","Pinch of salt","Ice cubes","Mint for garnish"],
+    steps:[
+      "Wash and peel the mangoes. Cut the flesh away from the seed.",
+      "Blend mango flesh until very smooth.",
+      "Add water (for juice) or milk (for milkshake consistency), sugar and cardamom.",
+      "Blend again until frothy and well combined.",
+      "Taste and adjust sugar — very sweet mangoes may need none.",
+      "Add a pinch of salt (it amplifies the mango sweetness).",
+      "Pour into glasses over ice.",
+      "Garnish with mint and serve chilled."
+    ],
+    tip:"Never use water for premium mango juice — the mango alone with a little cardamom is all you need. Use only ripe, fragrant mangoes."
+  },
+  "rose milk": {
+    emoji:"🌹", dish:"Rose Milk", tagline:"Pretty-pink, fragrant and impossibly refreshing",
+    prep:"5 mins", cook:"0 mins", serves:"2", diff:"Easy",
+    tags:["Vegetarian","Cold","Sweet","Classic"],
+    ingredients:["2 cups cold full-fat milk","3 tbsp rose syrup (Rooh Afza or homemade)","2 tbsp condensed milk or sugar","Ice cubes","Rose petals for garnish (optional)","½ tsp basil seeds (sabja) soaked in water — optional"],
+    steps:[
+      "If using basil seeds: soak in water for 15 minutes until they bloom into translucent gel balls.",
+      "Pour cold milk into a tall glass.",
+      "Add rose syrup and stir vigorously until the milk turns a gorgeous pink.",
+      "Add condensed milk or sugar and stir.",
+      "Drop in ice cubes.",
+      "Add bloomed basil seeds on top if using.",
+      "Garnish with a rose petal and serve chilled."
+    ],
+    tip:"Basil seeds (sabja) add a wonderfully cooling effect and a pleasant texture. They're a Chennai summer essential."
+  },
+  "sweet lassi": {
+    emoji:"🥛", dish:"Sweet Lassi", tagline:"Thick, creamy churned yogurt drink — pure summer bliss",
+    prep:"5 mins", cook:"0 mins", serves:"2", diff:"Easy",
+    tags:["Vegetarian","Cold","Sweet","Refreshing"],
+    ingredients:["1 cup thick yogurt (full fat)","½ cup cold water","3–4 tbsp sugar","¼ tsp cardamom powder","Pinch of saffron soaked in 1 tbsp warm milk","Ice cubes","Chopped pistachios and cream for garnish"],
+    steps:[
+      "Add yogurt, cold water and sugar to a blender.",
+      "Add cardamom powder and saffron milk.",
+      "Blend on high for 1–2 minutes until frothy and well combined.",
+      "Taste and adjust sweetness.",
+      "Pour into glasses over ice.",
+      "Top with a tablespoon of cream and a pinch of saffron.",
+      "Garnish with chopped pistachios."
+    ],
+    tip:"Thick, full-fat yogurt gives the best lassi. The more you blend, the frothier it gets — blend at least 2 full minutes."
+  },
+  "salt lassi": {
+    emoji:"🧂", dish:"Salt Lassi", tagline:"Refreshingly savoury — the summer drink Chennai loves",
+    prep:"5 mins", cook:"0 mins", serves:"2", diff:"Easy",
+    tags:["Vegetarian","Cold","Savoury","Summer"],
+    ingredients:["1 cup thick yogurt","½ cup cold water","½ tsp roasted cumin powder","¼ tsp black salt","¼ tsp regular salt","¼ tsp chaat masala","Ice cubes","Fresh coriander and mint"],
+    steps:[
+      "Add yogurt, cold water to a blender.",
+      "Add roasted cumin powder, black salt, regular salt and chaat masala.",
+      "Blend until smooth and frothy.",
+      "Taste — it should be savoury, tangy and aromatic.",
+      "Pour into glasses over ice.",
+      "Garnish with a sprig of mint and a pinch of roasted cumin powder."
+    ],
+    tip:"Black salt (kala namak) is essential — it gives the characteristic sulfurous-savoury depth that distinguishes a great salt lassi."
+  },
+
+  // DESSERTS
+  "gulab jamun": {
+    emoji:"🟤", dish:"Gulab Jamun", tagline:"Soft, syrup-drenched dumplings — deeply indulgent",
+    prep:"20 mins", cook:"30 mins", serves:"6", diff:"Medium",
+    tags:["Vegetarian","Sweet","Festival","Deep Fried"],
+    ingredients:["1 cup milk powder","¼ cup all-purpose flour","¼ tsp baking soda","1 tbsp ghee","¼ cup warm milk (approximate)","Oil for frying",
+      "For syrup: 2 cups sugar, 1½ cups water, ½ tsp cardamom, 1 tsp rose water, a few saffron strands"],
+    steps:[
+      "Make syrup: Dissolve sugar in water. Boil 5 minutes, add cardamom, saffron and rose water. Keep warm.",
+      "Mix milk powder, flour and baking soda. Rub in ghee until it resembles breadcrumbs.",
+      "Add warm milk gradually, mixing gently. Don't over-knead — it should form a soft dough.",
+      "Rest for 5 minutes. Divide into 20 small balls, rolling smoothly with no cracks.",
+      "Heat oil in a kadai to 140°C (low heat). The oil must not be too hot.",
+      "Slide in the balls and fry on low heat, stirring gently, for 8–10 minutes until deep brown.",
+      "Transfer the hot gulab jamuns directly into warm syrup.",
+      "Soak at least 2 hours (overnight is better). They will plump up beautifully.",
+      "Serve warm or at room temperature."
+    ],
+    tip:"The secret is low, slow frying — they must cook from the inside. High heat makes them dark outside and raw inside."
+  },
+  "rava kesari": {
+    emoji:"🟠", dish:"Rava Kesari", tagline:"Golden, saffron-kissed semolina halwa — the temple sweet",
+    prep:"5 mins", cook:"20 mins", serves:"6", diff:"Easy",
+    tags:["Vegetarian","Sweet","Quick","Festival"],
+    ingredients:["1 cup fine semolina (rava)","1¼ cups sugar","3 cups water","5 tbsp ghee","¼ tsp saffron + 2 tbsp warm milk","¼ tsp cardamom powder","2 tbsp cashews","2 tbsp raisins","A drop of orange food colour (optional)"],
+    steps:[
+      "Heat 2 tbsp ghee in a wide pan. Fry cashews golden, add raisins until plump. Remove and set aside.",
+      "In the same pan, roast semolina on low heat for 4–5 minutes until fragrant and slightly golden.",
+      "In another pot, bring water to a rolling boil.",
+      "Carefully pour boiling water into the roasted semolina, stirring rapidly to prevent lumps.",
+      "Cook on medium heat, stirring constantly, until semolina absorbs all water and becomes thick.",
+      "Add sugar and mix — it will loosen initially, then thicken again.",
+      "Add saffron milk, cardamom and food colour. Mix well.",
+      "Add remaining ghee and stir vigorously until the mixture leaves the sides of the pan.",
+      "Fold in cashews and raisins. Serve warm."
+    ],
+    tip:"Real saffron gives a naturally stunning golden hue. Adding the sugar after thickening prevents a stringy texture."
+  },
+  "badam halwa": {
+    emoji:"💛", dish:"Badam Halwa", tagline:"Royal almond fudge — festive, rich and deeply golden",
+    prep:"2 hrs", cook:"30 mins", serves:"8", diff:"Medium",
+    tags:["Vegetarian","Sweet","Festive","Rich"],
+    ingredients:["1 cup almonds","1 cup sugar","½ cup water","½ cup ghee","½ cup milk","½ tsp cardamom powder","A pinch of saffron soaked in 2 tbsp warm milk","Silver vark or pistachios to garnish"],
+    steps:[
+      "Soak almonds in hot water for 2 hours. Peel skins and grind to a fine, smooth paste with a little milk.",
+      "Dissolve sugar in water and bring to a single-thread consistency syrup.",
+      "Add almond paste to the syrup, stirring constantly on medium heat.",
+      "Add milk and continue stirring — the mixture will bubble vigorously.",
+      "Add ghee tablespoon by tablespoon as the halwa thickens, stirring after each addition.",
+      "Add saffron milk and cardamom. Keep stirring — this is a labour of love.",
+      "Cook until the halwa turns golden, comes together as one mass and ghee begins to release from the sides.",
+      "Serve warm garnished with pistachios or silver vark."
+    ],
+    tip:"Badam halwa requires patience and constant stirring. Never leave it unattended or it will burn at the bottom."
+  },
+  "ice cream": {
+    emoji:"🍦", dish:"Elaichi Ice Cream", tagline:"Fragrant cardamom ice cream — South India's favourite scoop",
+    prep:"20 mins", cook:"10 mins", serves:"6", diff:"Medium",
+    tags:["Vegetarian","Frozen","Sweet","Summer"],
+    ingredients:["2 cups heavy cream","1 cup full-fat milk","¾ cup condensed milk","1 tsp cardamom powder","½ tsp saffron + 2 tbsp warm milk","¼ cup pistachios, chopped","1 tsp rose water"],
+    steps:[
+      "Combine cream, milk and condensed milk in a large bowl.",
+      "Add cardamom powder, saffron milk and rose water. Whisk until combined.",
+      "Pour into an ice cream machine and churn as per manufacturer instructions.",
+      "Alternatively (no machine): Pour into a wide, shallow container. Freeze 2 hours.",
+      "Remove and blend or whisk vigorously to break ice crystals. Fold in pistachios.",
+      "Return to freezer for 2 hours. Repeat whisking process 2–3 times.",
+      "On the final freeze, press cling wrap directly on the surface.",
+      "Freeze at least 6 hours. Scoop and serve with extra pistachios."
+    ],
+    tip:"The repeated whisking breaks large ice crystals and creates a creamier texture — the no-churn secret to smooth ice cream."
+  },
+  "payasam": {
+    emoji:"🍮", dish:"Semiya Payasam", tagline:"Creamy vermicelli kheer — the sweet that ends every Tamil feast",
+    prep:"5 mins", cook:"25 mins", serves:"6", diff:"Easy",
+    tags:["Vegetarian","Sweet","Festival","Comfort Food"],
+    ingredients:["½ cup vermicelli (semiya)","1 litre full-fat milk","½ cup sugar","¼ tsp cardamom powder","¼ tsp saffron soaked in 2 tbsp milk","2 tbsp ghee","2 tbsp cashews","2 tbsp raisins"],
+    steps:[
+      "Heat ghee in a heavy pan. Fry cashews until golden, add raisins until plump. Remove and keep aside.",
+      "In the same ghee, roast vermicelli on low heat until it turns golden brown and smells nutty.",
+      "Pour in full-fat milk and bring to a boil, stirring.",
+      "Add roasted vermicelli and cook on medium heat for 8–10 minutes, stirring regularly.",
+      "The vermicelli will soften and the milk will reduce and thicken.",
+      "Add sugar and stir until dissolved.",
+      "Add cardamom powder and saffron milk. Mix well.",
+      "Simmer 5 more minutes. The payasam should coat the back of a spoon.",
+      "Add fried cashews and raisins. Serve warm or chilled."
+    ],
+    tip:"Roasting the vermicelli in ghee prevents it from becoming mushy and gives the payasam a wonderfully nutty depth."
+  },
+
+  // CHAAT
+  "pani puri": {
+    emoji:"💧", dish:"Pani Puri", tagline:"Exploding flavour bombs — Chennai's irresistible street obsession",
+    prep:"1 hr", cook:"30 mins", serves:"6", diff:"Medium",
+    tags:["Vegetarian","Street Food","Tangy","Chaat"],
+    ingredients:[
+      "For Puris: 1 cup fine semolina, ¼ cup all-purpose flour, salt, water, oil for frying",
+      "For Pani: 1 cup mint leaves, ½ cup coriander, 2 green chillies, 1 tbsp tamarind paste, 1 tsp cumin powder, 1 tsp chaat masala, 1 tsp black salt, 3 cups chilled water",
+      "For Filling: 2 boiled potatoes (mashed), 1 cup boiled chickpeas or moong, chaat masala, coriander"
+    ],
+    steps:[
+      "Make puri dough: Mix semolina, flour and salt. Add enough water to make a stiff dough. Rest 20 minutes. Roll thin and cut small circles.",
+      "Deep fry puris on medium heat, pressing gently to puff. Fry until golden and crisp. Drain and cool completely.",
+      "Make pani: Blend mint, coriander, chillies and tamarind. Mix with chilled water, cumin, chaat masala and black salt. Adjust tartness.",
+      "Make filling: Mix mashed potato, chickpeas and chaat masala.",
+      "To serve: Crack a hole in the top of each puri. Fill with a small spoon of potato mixture.",
+      "Dip each filled puri in the green pani until about half full.",
+      "Pop the entire puri in your mouth at once — never bite."
+    ],
+    tip:"Serve immediately once filled — soaked puris become soggy fast. The pani must be ice cold for the best street-food experience."
+  },
+  "bhel puri": {
+    emoji:"🌾", dish:"Bhel Puri", tagline:"Crunchy, tangy, addictive — the perfect street food medley",
+    prep:"15 mins", cook:"0 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","No-Cook","Street Food","Chaat"],
+    ingredients:["2 cups puffed rice","½ cup sev (thin fried gram flour noodles)","½ cup puri (small fried crackers)","1 onion, finely chopped","2 tomatoes, finely chopped","2 boiled potatoes, cubed","2 tbsp green chutney (mint-coriander)","2 tbsp sweet tamarind chutney","1 tsp chaat masala","½ tsp red chilli powder","Fresh coriander","Salt to taste"],
+    steps:[
+      "Toss puffed rice in a large mixing bowl.",
+      "Add sev and broken puris.",
+      "Add onions, tomatoes and boiled potato cubes.",
+      "Add green chutney and tamarind chutney.",
+      "Sprinkle chaat masala, red chilli powder and salt.",
+      "Toss everything quickly and well.",
+      "Serve immediately in paper cones or bowls.",
+      "Top with extra sev and fresh coriander."
+    ],
+    tip:"Bhel must be made and consumed within 2–3 minutes. It gets soggy fast. Make it in small batches and serve instantly."
+  },
+  "dahi puri": {
+    emoji:"🫙", dish:"Dahi Puri", tagline:"Cool, creamy chaat — puris filled with yogurt and chutneys",
+    prep:"15 mins", cook:"0 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Mild","Street Food","Chaat"],
+    ingredients:["20 small pani puris","1 cup thick yogurt (whisked smooth)","2 boiled potatoes (mashed lightly)","1 cup boiled chickpeas","Green chutney","Sweet tamarind chutney","Chaat masala","Roasted cumin powder","Red chilli powder","Sev for topping","Fresh coriander"],
+    steps:[
+      "Whisk yogurt until very smooth. Add a pinch of salt.",
+      "Make a hole at the top of each puri.",
+      "Place a small amount of mashed potato and chickpeas inside each puri.",
+      "Spoon a small amount of yogurt into each puri.",
+      "Add a drizzle of green chutney and tamarind chutney.",
+      "Sprinkle chaat masala, cumin powder and red chilli powder.",
+      "Top with sev and fresh coriander.",
+      "Serve immediately while the puris are still crisp."
+    ],
+    tip:"Use cold, thick yogurt — watery yogurt makes the puris collapse immediately. Assemble only when ready to eat."
+  },
+  "samosa chaat": {
+    emoji:"🔺", dish:"Samosa Chaat", tagline:"Crushed samosas drowned in toppings — street food royalty",
+    prep:"20 mins", cook:"30 mins", serves:"4", diff:"Medium",
+    tags:["Vegetarian","Street Food","Spicy","Chaat"],
+    ingredients:[
+      "For Samosas: 2 cups all-purpose flour, oil for frying, spiced potato filling",
+      "For Potato Filling: 3 potatoes (boiled, mashed), 1 tsp cumin, 1 tsp coriander powder, ½ tsp garam masala, green chillies, coriander, salt",
+      "For Topping: Thick yogurt, green chutney, tamarind chutney, chaat masala, sev, pomegranate seeds, coriander"
+    ],
+    steps:[
+      "Make dough: Mix flour with salt and 3 tbsp oil. Add enough water to make a stiff dough. Rest 20 minutes.",
+      "Make filling: Mix mashed potato with cumin, coriander powder, garam masala, chillies and salt.",
+      "Roll dough thin, cut semicircles. Shape into cones, fill and seal with water.",
+      "Deep fry samosas on medium heat until deeply golden and crispy. Cool slightly.",
+      "To assemble: Crush 2 samosas onto each plate.",
+      "Pour warm chickpea curry (optional) or spoon yogurt over the crushed samosas.",
+      "Drizzle green and tamarind chutneys generously.",
+      "Sprinkle chaat masala, sev, pomegranate seeds and coriander. Serve immediately."
+    ],
+    tip:"The contrast of hot crispy samosa, cold yogurt and tangy chutneys is what makes samosa chaat irresistible. Serve before the samosa absorbs everything."
+  },
+
+  // EVENING SNACKS
+  "samosa": {
+    emoji:"🔺", dish:"Samosa", tagline:"Crispy pastry, spiced potato filling — the eternal Indian snack",
+    prep:"45 mins", cook:"25 mins", serves:"4", diff:"Medium",
+    tags:["Vegetarian","Deep Fried","Snack","Evening"],
+    ingredients:[
+      "For Pastry: 2 cups all-purpose flour, ½ tsp salt, 3 tbsp oil, cold water",
+      "For Filling: 4 boiled potatoes (mashed), ½ cup green peas, 1 tsp cumin seeds, 1 tsp coriander powder, ½ tsp garam masala, ½ tsp amchur (dry mango powder), 2 green chillies, fresh coriander, salt"
+    ],
+    steps:[
+      "Make pastry: Mix flour, salt and oil. Rub together until crumbly. Add cold water gradually to make a stiff dough. Rest 20 minutes.",
+      "Make filling: Temper cumin seeds in oil. Add chillies. Mix in potatoes, peas and all spices. Cool completely.",
+      "Divide dough into balls. Roll each into a thin oval. Cut in half.",
+      "Shape each half into a cone. Fill with 2 tbsp of potato filling. Seal edges with water firmly.",
+      "The seal must be tight — any gaps will burst open in oil.",
+      "Heat oil to 160°C. Fry samosas on medium-low heat for 8–10 minutes until deeply golden.",
+      "Don't rush with high heat — slow frying makes the pastry crackeringly crisp.",
+      "Drain and serve with mint-coriander chutney and tamarind chutney."
+    ],
+    tip:"Stiff pastry dough and slow frying are the two secrets to the perfect samosa. Soft dough = greasy samosa."
+  },
+  "vegetable cutlet": {
+    emoji:"🟤", dish:"Vegetable Cutlet", tagline:"Crispy-crumbed, tender-inside — a beloved South Indian snack",
+    prep:"30 mins", cook:"20 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Shallow Fried","Snack","Crispy"],
+    ingredients:["2 large potatoes, boiled and mashed","½ cup carrot, boiled and grated","¼ cup French beans, boiled and chopped","¼ cup green peas, boiled","1 onion, finely chopped","2 green chillies, finely chopped","1 tsp garam masala","1 tsp chaat masala","Salt to taste","Breadcrumbs for coating","1 egg or 2 tbsp cornflour slurry","Oil for shallow frying"],
+    steps:[
+      "Mix mashed potato, carrot, beans, peas, onion and chillies together.",
+      "Add garam masala, chaat masala and salt. Mix well. Taste and adjust.",
+      "Shape into oval patties about 1cm thick.",
+      "Dip each patty in egg or cornflour slurry, then coat thoroughly in breadcrumbs.",
+      "Press breadcrumbs firmly to ensure even coating.",
+      "Refrigerate 15 minutes — this helps the coating stick during frying.",
+      "Heat oil in a flat pan. Shallow fry on medium heat 3 minutes each side until deep golden and crispy.",
+      "Drain on paper towels. Serve hot with ketchup or mint chutney."
+    ],
+    tip:"Cold cutlets fry better than room temperature ones. Keep them chilled before hitting the pan for a crispier crust."
+  },
+  "bajji": {
+    emoji:"🌶️", dish:"Bajji (Pakora)", tagline:"Batter-dipped, deep-fried perfection — best eaten in the rain",
+    prep:"15 mins", cook:"20 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Deep Fried","Snack","Monsoon"],
+    ingredients:["Vegetables: banana pepper, potato, raw plantain, onion rings, brinjal — sliced thin","1 cup chickpea flour (besan)","2 tbsp rice flour","½ tsp red chilli powder","¼ tsp turmeric","½ tsp ajwain (carom seeds)","Salt to taste","Water to make batter","Oil for deep frying"],
+    steps:[
+      "Mix chickpea flour, rice flour, chilli powder, turmeric, ajwain and salt.",
+      "Add water gradually, whisking until a smooth, thick batter forms. It should coat the back of a spoon.",
+      "Rest the batter 10 minutes.",
+      "Heat oil in a kadai to 170°C.",
+      "Dip each vegetable slice in batter, ensuring it is fully coated.",
+      "Slide into hot oil gently. Fry in batches — don't overcrowd.",
+      "Fry on medium heat 3–4 minutes, flipping once, until golden and crispy.",
+      "Drain on paper towels. Serve immediately with coconut chutney or tomato ketchup."
+    ],
+    tip:"The batter must be thick enough to cling — thin batter slides off and leaves the vegetable naked. Rice flour is the secret to extra crunch."
+  },
+  "pakoda": {
+    emoji:"🧅", dish:"Onion Pakoda", tagline:"Shaggy, crispy fried onion fritters — addictively good",
+    prep:"10 mins", cook:"15 mins", serves:"4", diff:"Easy",
+    tags:["Vegetarian","Deep Fried","Snack","Crispy"],
+    ingredients:["2 large onions, very thinly sliced","1 cup chickpea flour (besan)","2 tbsp rice flour","1 tsp red chilli powder","½ tsp turmeric","½ tsp cumin seeds","1 sprig curry leaves, chopped","1 green chilli, finely chopped","Salt to taste","Oil for deep frying"],
+    steps:[
+      "Slice onions into thin half-moon strips. Place in a bowl.",
+      "Add chickpea flour, rice flour, red chilli, turmeric, cumin, curry leaves and chilli directly over the onions.",
+      "Add salt. Mix well with hands. The onions will release moisture — this is the batter.",
+      "Add only 1–2 tsp water if absolutely necessary. The mixture should be just moist enough to clump.",
+      "Heat oil to 170°C. Drop rough clusters of the onion mixture into the oil.",
+      "Don't form smooth balls — the irregular, shaggy shape is what creates extra crispiness.",
+      "Fry on medium heat 4–5 minutes until deeply golden all over.",
+      "Drain well. Serve with hot filter coffee or chai."
+    ],
+    tip:"Onion pakoda is best eaten the instant it comes out of oil. The onion moisture becomes steam and keeps the inside soft while the outside is shatteringly crisp."
+  },
+  "mirchi bajji": {
+    emoji:"🌶️", dish:"Mirchi Bajji", tagline:"Stuffed green chilli in batter — spicy Chennai street fire",
+    prep:"20 mins", cook:"20 mins", serves:"4", diff:"Medium",
+    tags:["Vegetarian","Deep Fried","Spicy","Street Food"],
+    ingredients:["8 large, mild green chillies (banana peppers)","1 cup chickpea flour","2 tbsp rice flour","½ tsp red chilli powder","¼ tsp turmeric","Salt","Water for batter",
+      "For stuffing: 2 boiled potatoes (mashed), 1 tsp chaat masala, 1 tsp amchur, ½ tsp cumin, salt, fresh coriander"],
+    steps:[
+      "Slit the green chillies lengthwise on one side, keeping them intact. Remove seeds if you prefer less heat.",
+      "Make stuffing: Mix mashed potato with chaat masala, amchur, cumin and salt. Add fresh coriander.",
+      "Stuff each chilli with the potato filling. Press gently to close.",
+      "Make batter: Mix chickpea flour, rice flour, chilli powder, turmeric and salt. Add water to make a thick, smooth batter.",
+      "Heat oil to 170°C.",
+      "Dip each stuffed chilli in batter, covering completely.",
+      "Fry on medium heat 4–5 minutes until golden and blistered.",
+      "Drain and serve with coconut chutney and raw onion rings."
+    ],
+    tip:"Choose wide, mild banana peppers — not thin hot chillies. The potato stuffing inside contrasts beautifully with the spicy batter outside."
+  }
+};
+
+// ─── MENU DATA ────────────────────────────────────────────────────────────────
+const menuData = {
+  'Breakfast':       { icon:'🌅', items:['Idli','Vada','Plain Dosa','Masala Dosa','Rava Dosa','Pongal','Upma','Poori with Potato Masala'] },
+  'Lunch':           { icon:'☀️', items:['South Indian Meals','Mini Meals','Sambar Rice','Curd Rice','Lemon Rice','Tomato Rice','Vegetable Biryani','Chapati with Kurma'] },
+  'Dinner':          { icon:'🌙', items:['Masala Dosa','Ghee Roast Dosa','Onion Uttapam','Set Dosa','Paneer Butter Masala','Butter Naan','Veg Fried Rice','Veg Noodles'] },
+  'Hot Beverages':   { icon:'☕', items:['Filter Coffee','Masala Tea','Badam Milk','Hot Chocolate'] },
+  'Cold Beverages':  { icon:'🥤', items:['Fresh Lime Juice','Mango Juice','Rose Milk','Sweet Lassi','Salt Lassi'] },
+  'Desserts':        { icon:'🍮', items:['Gulab Jamun','Rava Kesari','Badam Halwa','Ice Cream','Payasam'] },
+  'Chaat':           { icon:'🌶️', items:['Pani Puri','Bhel Puri','Dahi Puri','Samosa Chaat'] },
+  'Evening Snacks':  { icon:'🫘', items:['Samosa','Vegetable Cutlet','Bajji','Pakoda','Mirchi Bajji'] }
+};
+
+const areas = [
+  { name:'T. Nagar',       restaurants:['Murugan Idli Shop','Saravana Bhavan','Sangeetha Veg Restaurant'] },
+  { name:'Mylapore',       restaurants:["Rayar's Mess","Murugan Idli Shop","Madhurai Mess"] },
+  { name:'Adyar',          restaurants:['Sangeetha Veg Restaurant','Saravana Bhavan','Adyar Ananda Bhavan'] },
+  { name:'Anna Nagar',     restaurants:['Junior Kuppanna','Saravana Bhavan','Murugan Idli Shop'] },
+  { name:'Egmore',         restaurants:['Buhari Hotel','Ponnusamy Hotel','Anjappar Chettinad'] },
+  { name:'Nungambakkam',   restaurants:['Paati Veedu','Madras Pavilion','The Flying Elephant'] },
+  { name:'Velachery',      restaurants:['Anjappar Chettinad','Junior Kuppanna','Sangeetha Veg Restaurant'] },
+  { name:'Porur',          restaurants:['Junior Kuppanna','Murugan Idli Shop','Saravana Bhavan'] },
+];
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.getElementById('nav-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+  if (name === 'areas') initAreas();
+  return false;
+}
+
+// ─── MENU ─────────────────────────────────────────────────────────────────────
+function showMenu(restaurantName) {
+  document.getElementById('menu-title').textContent = restaurantName;
+  document.getElementById('menu-restaurant-label').textContent = restaurantName;
+  const content = document.getElementById('menu-content');
+  content.innerHTML = '';
+  for (const [cat, data] of Object.entries(menuData)) {
+    const div = document.createElement('div');
+    div.className = 'menu-category';
+    div.innerHTML = `<h2 class="menu-category-title"><span class="menu-category-icon">${data.icon}</span>${cat}</h2>
+      <div class="menu-items-grid">${data.items.map(item => `
+        <div class="menu-item" onclick="openRecipe('${item.replace(/'/g,"\\'")}')">
+          <span>${item}</span><span class="view-recipe">Recipe →</span>
+        </div>`).join('')}</div>`;
+    content.appendChild(div);
+  }
+  showPage('menu');
+  return false;
+}
+
+// ─── RECIPE LOGIC ─────────────────────────────────────────────────────────────
+function openRecipe(dishName) {
+  const key = dishName.toLowerCase();
+  const r = RECIPES[key];
+  const overlay = document.getElementById('recipe-overlay');
+  overlay.classList.add('open');
+  if (!r) {
+    document.getElementById('recipe-content').innerHTML = `
+      <div style="padding:2.5rem 2rem;">
+        <div style="text-align:center; margin-bottom:1.5rem; font-size:3rem;">🍳</div>
+        <h2 style="font-family:'Playfair Display',serif; color:var(--deep-red); text-align:center; margin-bottom:0.5rem;">${dishName}</h2>
+        <p style="text-align:center; color:#9B8060; font-size:0.9rem; margin-bottom:1.5rem;">Authentic South Indian Recipe</p>
+        <div style="background:#fff; border:1px solid var(--border); border-radius:10px; padding:1.5rem; text-align:center; color:#6B5B3E; font-size:0.9rem; line-height:1.7;">
+          This dish is a beloved part of Chennai cuisine, typically prepared with fresh, local ingredients and generations of culinary wisdom. Ask your favourite restaurant or local aachi for the exact recipe!
+        </div>
+        <button class="close-recipe" style="margin-top:1.5rem;" onclick="closeRecipe()">✕ Close</button>
+      </div>`;
+    return;
+  }
+  document.getElementById('recipe-content').innerHTML = `
+    <div class="recipe-hero">
+      <span class="dish-emoji">${r.emoji}</span>
+      <h2>${r.dish}</h2>
+      <p class="tagline">${r.tagline}</p>
+    </div>
+    <div class="recipe-body">
+      <div class="recipe-meta">
+        <div class="recipe-meta-item"><div class="label">Prep</div><div class="val">${r.prep}</div></div>
+        <div class="recipe-meta-item"><div class="label">Cook</div><div class="val">${r.cook}</div></div>
+        <div class="recipe-meta-item"><div class="label">Serves</div><div class="val">${r.serves}</div></div>
+        <div class="recipe-meta-item"><div class="label">Level</div><div class="val">${r.diff}</div></div>
+      </div>
+      <div class="recipe-tags">${r.tags.map(t=>`<span class="recipe-tag">${t}</span>`).join('')}</div>
+      <div class="recipe-section-title">🫙 Ingredients</div>
+      <div class="ingredients-grid">${r.ingredients.map(i=>`<div class="ingredient">${i}</div>`).join('')}</div>
+      <div class="recipe-section-title">👨‍🍳 Method</div>
+      <div class="steps-list">${r.steps.map((s,i)=>`<div class="step"><div class="step-num">${i+1}</div><p>${s}</p></div>`).join('')}</div>
+      <div class="recipe-tip"><strong>💡 Chef's Tip:</strong> ${r.tip}</div>
+      <button class="close-recipe" onclick="closeRecipe()">✕ Close Recipe</button>
+    </div>`;
+}
+
+function closeRecipe() { document.getElementById('recipe-overlay').classList.remove('open'); }
+function closeRecipeOnOverlay(e) { if (e.target === document.getElementById('recipe-overlay')) closeRecipe(); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeRecipe(); });
+
+// ─── AREAS ────────────────────────────────────────────────────────────────────
+function initAreas() {
+  const list = document.getElementById('area-list');
+  if (list.innerHTML) return;
+  areas.forEach((area, idx) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<button class="area-btn" onclick="selectArea(${idx})">${area.name}<span class="count">${area.restaurants.length}</span></button>`;
+    list.appendChild(li);
+  });
+  selectArea(0);
+}
+
+function selectArea(idx) {
+  const area = areas[idx];
+  document.querySelectorAll('.area-btn').forEach((b,i) => b.classList.toggle('selected', i===idx));
+  document.getElementById('area-empty').style.display = 'none';
+  document.getElementById('area-detail-content').style.display = 'block';
+  document.getElementById('area-detail-title').textContent = area.name;
+  document.getElementById('area-detail-count').textContent = area.restaurants.length + ' restaurants';
+  document.getElementById('area-rest-cards').innerHTML = area.restaurants.map(r => `
+    <div class="area-rest-card" onclick="showMenu('${r.replace(/'/g,"\\'")}')">
+      <span>${r}</span><span class="arrow">→</span>
+    </div>`).join('');
+}
+</script>
+</body>
+</html>
